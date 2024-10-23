@@ -78,6 +78,10 @@ namespace ImmersiveInventorySpoilage.HarmonyPatches
                         positionAwarePerishRate = Math.Max(0.1f, Math.Min(2.4f, (float)Math.Pow(3.0, (double)(hereTemp / 19f) - 1.2) - 0.1f));
                     }
                     //END GetPerishRate
+
+                    var tempBehaviour = __instance.Player.Entity.GetBehavior<EntityBehaviorBodyTemperature>();
+
+                    positionAwarePerishRate += tempBehaviour.Wetness;
                 }
                 else if (transType == EnumTransitionType.Dry)
                 {
