@@ -15,5 +15,17 @@ namespace ImmersiveInventorySpoilage
         /// </summary>
         [Range(0f, 1f)]
         public float PositionAwarePerishRateSimularity { get; set; } = 1;
+
+        /// <summary>
+        /// Whether the drying multiplier is allowed to go negative.
+        /// If set to true drying process may start reversing if you get too wet.
+        /// </summary>
+        public bool AllowNegativeDryMultiplier { get; set; } = true;
+
+        /// <summary>
+        /// Up to how much the spoil rate multiplier increases when wet
+        /// (since wetness can only go up to 1, this is value is simply multiplied with the wetness to get the multiplier increase)
+        /// </summary>
+        public float MaxWetnessSpoilRateIncrease { get; set; } = 0.25f;
     }
 }

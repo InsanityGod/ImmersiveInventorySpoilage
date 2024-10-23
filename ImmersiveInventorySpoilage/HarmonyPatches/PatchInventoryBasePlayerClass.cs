@@ -19,14 +19,14 @@ namespace ImmersiveInventorySpoilage.HarmonyPatches
         {
             __instance.OnAcquireTransitionSpeed = (EnumTransitionType transType, ItemStack stack, float baseMul) =>
             {
-                if (__instance.Player == null)
+                if (__instance.Player == null || __instance.Api == null)
                 {
                     return baseMul;
                 }
 
-                float positionAwarePerishRate = 1;
+                float multiplier = 1;
 
-                if (__instance.Api != null && transType == EnumTransitionType.Perish)
+                if (transType == EnumTransitionType.Perish)
                 {
                     //START GetPerishRate
 
@@ -75,28 +75,35 @@ namespace ImmersiveInventorySpoilage.HarmonyPatches
                         float cellarTemp = 5f;
                         float hereTemp = GameMath.Lerp(airTemp, cellarTemp, soilTempWeight);
                         hereTemp = Math.Min(hereTemp, airTemp);
-                        positionAwarePerishRate = Math.Max(0.1f, Math.Min(2.4f, (float)Math.Pow(3.0, (double)(hereTemp / 19f) - 1.2) - 0.1f));
+                        multiplier = Math.Max(0.1f, Math.Min(2.4f, (float)Math.Pow(3.0, (double)(hereTemp / 19f) - 1.2) - 0.1f));
                     }
                     //END GetPerishRate
 
                     var tempBehaviour = __instance.Player.Entity.GetBehavior<EntityBehaviorBodyTemperature>();
 
-                    positionAwarePerishRate += tempBehaviour.Wetness;
+                    //Apply config
+                    multiplier = 1 + (multiplier - 1) * ImmersiveInventorySpoilageModSystem.Config.PositionAwarePerishRateSimularity;
+
+                    //TODO maybe make this less severe but work multiplicitive with heat
+                    //TODO maybe make this affected by the nutrition category (grain for instance would be way more affected by being wet)
+                    multiplier += (tempBehaviour.Wetness * ImmersiveInventorySpoilageModSystem.Config.MaxWetnessSpoilRateIncrease);
                 }
                 else if (transType == EnumTransitionType.Dry)
                 {
                     var tempBehaviour = __instance.Player.Entity.GetBehavior<EntityBehaviorBodyTemperature>();
-                    positionAwarePerishRate = Math.Max(0.5f - tempBehaviour.Wetness, -0.5f);
+                    multiplier = 0.5f - tempBehaviour.Wetness;
+
+                    if (!ImmersiveInventorySpoilageModSystem.Config.AllowNegativeDryMultiplier && multiplier < 0)
+                    {
+                        multiplier = 0;
+                    }
                 }
                 else if (transType == EnumTransitionType.Melt)
                 {
-                    positionAwarePerishRate = 0.25f;
+                    multiplier = 0.25f;
                 }
 
-                //Apply config
-                positionAwarePerishRate = 1 + (positionAwarePerishRate - 1) * ImmersiveInventorySpoilageModSystem.Config.PositionAwarePerishRateSimularity;
-
-                return baseMul * positionAwarePerishRate;
+                return baseMul * multiplier;
             };
         }
     }
