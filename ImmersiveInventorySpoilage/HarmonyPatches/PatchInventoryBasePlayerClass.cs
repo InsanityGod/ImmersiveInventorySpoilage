@@ -79,7 +79,12 @@ namespace ImmersiveInventorySpoilage.HarmonyPatches
                     }
                     //END GetPerishRate
                 }
-                else if (transType == EnumTransitionType.Dry || transType == EnumTransitionType.Melt)
+                else if (transType == EnumTransitionType.Dry)
+                {
+                    var tempBehaviour = __instance.Player.Entity.GetBehavior<EntityBehaviorBodyTemperature>();
+                    positionAwarePerishRate = Math.Max(0.5f - tempBehaviour.Wetness, -0.5f);
+                }
+                else if (transType == EnumTransitionType.Melt)
                 {
                     positionAwarePerishRate = 0.25f;
                 }
