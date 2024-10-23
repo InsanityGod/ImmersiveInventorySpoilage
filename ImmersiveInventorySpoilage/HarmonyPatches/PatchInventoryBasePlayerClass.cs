@@ -32,7 +32,7 @@ namespace ImmersiveInventorySpoilage.HarmonyPatches
 
                     var pos = __instance.Player?.Entity?.Pos?.AsBlockPos ?? __instance.Pos;
 
-                    if (pos != null)
+                    if (pos != null && ImmersiveInventorySpoilageModSystem.Config.PositionAwarePerishRateSimularity != 0)
                     {
                         BlockPos sealevelpos = pos.Copy();
                         sealevelpos.Y = __instance.Api.World.SeaLevel;
@@ -83,6 +83,9 @@ namespace ImmersiveInventorySpoilage.HarmonyPatches
                 {
                     positionAwarePerishRate = 0.25f;
                 }
+
+                //Apply config
+                positionAwarePerishRate = 1 + (positionAwarePerishRate - 1) * ImmersiveInventorySpoilageModSystem.Config.PositionAwarePerishRateSimularity;
 
                 return baseMul * positionAwarePerishRate;
             };
