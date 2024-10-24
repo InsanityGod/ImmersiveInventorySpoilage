@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vintagestory.API.Common;
 
 namespace ImmersiveInventorySpoilage
 {
@@ -26,6 +27,15 @@ namespace ImmersiveInventorySpoilage
         /// Up to how much the spoil rate multiplier increases when wet
         /// (since wetness can only go up to 1, this is value is simply multiplied with the wetness to get the multiplier increase)
         /// </summary>
-        public float MaxWetnessSpoilRateIncrease { get; set; } = 0.25f;
+        public Dictionary<EnumFoodCategory, float> WetnessSpoilIncreaseByFoodCat { get; set; } = new Dictionary<EnumFoodCategory, float>
+        {
+            { EnumFoodCategory.NoNutrition, 0.2f },
+            { EnumFoodCategory.Fruit, 0.2f },
+            { EnumFoodCategory.Vegetable, 0.2f },
+            { EnumFoodCategory.Protein, 0.2f },
+            { EnumFoodCategory.Grain, 0.2f },
+            { EnumFoodCategory.Dairy, 0.2f },
+            { EnumFoodCategory.Unknown, 0.2f }
+        };
     }
 }

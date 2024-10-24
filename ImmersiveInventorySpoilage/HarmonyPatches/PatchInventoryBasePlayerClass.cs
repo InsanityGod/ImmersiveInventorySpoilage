@@ -32,7 +32,7 @@ namespace ImmersiveInventorySpoilage.HarmonyPatches
 
                     var pos = __instance.Player?.Entity?.Pos?.AsBlockPos ?? __instance.Pos;
 
-                    if (pos != null && ImmersiveInventorySpoilageModSystem.Config.PositionAwarePerishRateSimularity != 0)
+                    if (pos != null)
                     {
                         BlockPos sealevelpos = pos.Copy();
                         sealevelpos.Y = __instance.Api.World.SeaLevel;
@@ -79,14 +79,17 @@ namespace ImmersiveInventorySpoilage.HarmonyPatches
                     }
                     //END GetPerishRate
 
-                    var tempBehaviour = __instance.Player.Entity.GetBehavior<EntityBehaviorBodyTemperature>();
-
                     //Apply config
                     multiplier = 1 + (multiplier - 1) * ImmersiveInventorySpoilageModSystem.Config.PositionAwarePerishRateSimularity;
 
+                    var tempBehaviour = __instance.Player.Entity.GetBehavior<EntityBehaviorBodyTemperature>();
                     //TODO maybe make this less severe but work multiplicitive with heat
-                    //TODO maybe make this affected by the nutrition category (grain for instance would be way more affected by being wet)
-                    multiplier += (tempBehaviour.Wetness * ImmersiveInventorySpoilageModSystem.Config.MaxWetnessSpoilRateIncrease);
+
+                    EnumFoodCategory foodCategory = stack.Collectible?.NutritionProps?.FoodCategory ?? EnumFoodCategory.Unknown;
+                    ImmersiveInventorySpoilageModSystem.Config.WetnessSpoilIncreaseByFoodCat.TryGetValue(foodCategory, out var foodWetnessSpoilRate);
+                    var wetnessMultiplier = tempBehaviour.Wetness * foodWetnessSpoilRate;
+
+                    multiplier += wetnessMultiplier;
                 }
                 else if (transType == EnumTransitionType.Dry)
                 {
