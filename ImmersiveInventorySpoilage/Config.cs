@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vintagestory.API.Common;
 
 namespace ImmersiveInventorySpoilage
 {
@@ -15,5 +16,26 @@ namespace ImmersiveInventorySpoilage
         /// </summary>
         [Range(0f, 1f)]
         public float PositionAwarePerishRateSimularity { get; set; } = 1;
+
+        /// <summary>
+        /// Whether the drying multiplier is allowed to go negative.
+        /// If set to true drying process may start reversing if you get too wet.
+        /// </summary>
+        public bool AllowNegativeDryMultiplier { get; set; } = true;
+
+        /// <summary>
+        /// Up to how much the spoil rate multiplier increases when wet
+        /// You can remove a food category (or set it to 0) to disable the effect on it
+        /// </summary>
+        public Dictionary<EnumFoodCategory, float> WetnessSpoilIncreaseByFoodCat { get; set; } = new Dictionary<EnumFoodCategory, float>
+        {
+            { EnumFoodCategory.NoNutrition, 0.2f },
+            { EnumFoodCategory.Fruit, 0.2f },
+            { EnumFoodCategory.Vegetable, 0.2f },
+            { EnumFoodCategory.Protein, 0.4f },
+            { EnumFoodCategory.Grain, 0.8f },
+            { EnumFoodCategory.Dairy, 1f },
+            { EnumFoodCategory.Unknown, 0.2f }
+        };
     }
 }

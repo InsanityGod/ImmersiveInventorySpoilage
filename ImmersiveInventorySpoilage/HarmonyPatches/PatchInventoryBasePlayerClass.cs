@@ -19,20 +19,20 @@ namespace ImmersiveInventorySpoilage.HarmonyPatches
         {
             __instance.OnAcquireTransitionSpeed = (EnumTransitionType transType, ItemStack stack, float baseMul) =>
             {
-                if (__instance.Player == null)
+                if (__instance.Player == null || __instance.Api == null)
                 {
                     return baseMul;
                 }
 
-                float positionAwarePerishRate = 1;
+                float multiplier = 1;
 
-                if (__instance.Api != null && transType == EnumTransitionType.Perish)
+                if (transType == EnumTransitionType.Perish)
                 {
                     //START GetPerishRate
 
                     var pos = __instance.Player?.Entity?.Pos?.AsBlockPos ?? __instance.Pos;
 
-                    if (pos != null && ImmersiveInventorySpoilageModSystem.Config.PositionAwarePerishRateSimularity != 0)
+                    if (pos != null)
                     {
                         BlockPos sealevelpos = pos.Copy();
                         sealevelpos.Y = __instance.Api.World.SeaLevel;
@@ -75,19 +75,37 @@ namespace ImmersiveInventorySpoilage.HarmonyPatches
                         float cellarTemp = 5f;
                         float hereTemp = GameMath.Lerp(airTemp, cellarTemp, soilTempWeight);
                         hereTemp = Math.Min(hereTemp, airTemp);
-                        positionAwarePerishRate = Math.Max(0.1f, Math.Min(2.4f, (float)Math.Pow(3.0, (double)(hereTemp / 19f) - 1.2) - 0.1f));
+                        multiplier = Math.Max(0.1f, Math.Min(2.4f, (float)Math.Pow(3.0, (double)(hereTemp / 19f) - 1.2) - 0.1f));
                     }
                     //END GetPerishRate
+
+                    //Apply config
+                    multiplier = 1 + (multiplier - 1) * ImmersiveInventorySpoilageModSystem.Config.PositionAwarePerishRateSimularity;
+
+                    var tempBehaviour = __instance.Player.Entity.GetBehavior<EntityBehaviorBodyTemperature>();
+
+                    EnumFoodCategory foodCategory = stack.Collectible?.NutritionProps?.FoodCategory ?? EnumFoodCategory.Unknown;
+                    ImmersiveInventorySpoilageModSystem.Config.WetnessSpoilIncreaseByFoodCat.TryGetValue(foodCategory, out var foodWetnessSpoilRate);
+                    var wetnessMultiplier = tempBehaviour.Wetness * foodWetnessSpoilRate;
+
+                    multiplier += wetnessMultiplier;
                 }
-                else if (transType == EnumTransitionType.Dry || transType == EnumTransitionType.Melt)
+                else if (transType == EnumTransitionType.Dry)
                 {
-                    positionAwarePerishRate = 0.25f;
+                    var tempBehaviour = __instance.Player.Entity.GetBehavior<EntityBehaviorBodyTemperature>();
+                    multiplier = 0.5f - tempBehaviour.Wetness;
+
+                    if (!ImmersiveInventorySpoilageModSystem.Config.AllowNegativeDryMultiplier && multiplier < 0)
+                    {
+                        multiplier = 0;
+                    }
+                }
+                else if (transType == EnumTransitionType.Melt)
+                {
+                    multiplier = 0.25f;
                 }
 
-                //Apply config
-                positionAwarePerishRate = 1 + (positionAwarePerishRate - 1) * ImmersiveInventorySpoilageModSystem.Config.PositionAwarePerishRateSimularity;
-
-                return baseMul * positionAwarePerishRate;
+                return baseMul * multiplier;
             };
         }
     }
