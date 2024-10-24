@@ -6,7 +6,7 @@
     "TheInsanityGod"
   ],
   "description": "Tweaks to inventory spoilage, to make it feel more realistic and consistent",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "dependencies": {
     "game": "",
     "survival": ""
