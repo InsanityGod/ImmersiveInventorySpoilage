@@ -83,7 +83,6 @@ namespace ImmersiveInventorySpoilage.HarmonyPatches
                     multiplier = 1 + (multiplier - 1) * ImmersiveInventorySpoilageModSystem.Config.PositionAwarePerishRateSimularity;
 
                     var tempBehaviour = __instance.Player.Entity.GetBehavior<EntityBehaviorBodyTemperature>();
-                    //TODO maybe make this less severe but work multiplicitive with heat
 
                     EnumFoodCategory foodCategory = stack.Collectible?.NutritionProps?.FoodCategory ?? EnumFoodCategory.Unknown;
                     ImmersiveInventorySpoilageModSystem.Config.WetnessSpoilIncreaseByFoodCat.TryGetValue(foodCategory, out var foodWetnessSpoilRate);
