@@ -12,7 +12,7 @@ namespace ImmersiveInventorySpoilage
 {
     public class ImmersiveInventorySpoilageModSystem : ModSystem
     {
-        private const string ConfigName = "ImmersiveFoodSpoilageConfig.json";
+        private const string ConfigName = "ImmersiveInventorySpoilageConfig.json";
 
         private Harmony harmony;
 
