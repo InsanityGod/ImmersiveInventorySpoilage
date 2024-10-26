@@ -1,0 +1,12 @@
+[
+  {
+    "file": "game:itemtypes/resource/slush.json",
+    "op": "addmerge",
+    "path": "/behaviors",
+    "value": [
+      {
+        "name": "WetObject"
+      }
+    ]
+  }
+]

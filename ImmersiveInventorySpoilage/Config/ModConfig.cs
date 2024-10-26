@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Vintagestory.API.Common;
 
-namespace ImmersiveInventorySpoilage
+namespace ImmersiveInventorySpoilage.Config
 {
-    public class Config
+    public class ModConfig
     {
         /// <summary>
         /// How large the position aware perish rate effect is on the player inventory.

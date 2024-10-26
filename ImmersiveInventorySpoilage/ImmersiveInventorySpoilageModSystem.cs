@@ -1,11 +1,15 @@
 ﻿using HarmonyLib;
+using ImmersiveInventorySpoilage.Behaviors.Items;
+using ImmersiveInventorySpoilage.Config;
 using ImmersiveInventorySpoilage.HarmonyPatches;
 using System;
+using System.Runtime.CompilerServices;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.Server;
 using Vintagestory.Common;
+using Vintagestory.GameContent;
 using Vintagestory.Server;
 
 namespace ImmersiveInventorySpoilage
@@ -16,10 +20,8 @@ namespace ImmersiveInventorySpoilage
 
         private Harmony harmony;
 
-        public static Config Config { get; private set; }
+        public static ModConfig Config { get; private set; }
 
-        // Called on server and client
-        // Useful for registering block/entity classes on both sides
         public override void Start(ICoreAPI api)
         {
             if (!Harmony.HasAnyPatches(Mod.Info.ModID))
@@ -36,7 +38,7 @@ namespace ImmersiveInventorySpoilage
 
             try
             {
-                Config ??= api.LoadModConfig<Config>(ConfigName);
+                Config ??= api.LoadModConfig<ModConfig>(ConfigName);
                 if (Config == null)
                 {
                     Config = new();
@@ -49,6 +51,14 @@ namespace ImmersiveInventorySpoilage
                 api.Logger.Warning("Failed to load config, using default values instead");
                 Config = new();
             }
+
+            RegisterCollectibleBehaviors(api);
+        }
+
+        private static void RegisterCollectibleBehaviors(ICoreAPI api)
+        {
+            api.RegisterCollectibleBehaviorClass("WetObject", typeof(CollectibleBehaviorWetObject));
+            CollectibleBehaviorWetObject.RegisterListener(api);
         }
 
         public override void Dispose()
