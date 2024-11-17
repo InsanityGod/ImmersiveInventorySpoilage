@@ -36,6 +36,12 @@ namespace ImmersiveInventorySpoilage
                 harmony.Patch(invTypeCtor2, postfix: new HarmonyMethod(typeof(PatchInventoryBasePlayerClass).GetMethod(nameof(PatchInventoryBasePlayerClass.PostFix))));
             }
 
+            LoadConfig(api);
+            RegisterCollectibleBehaviors(api);
+        }
+
+        private static void LoadConfig(ICoreAPI api)
+        {
             try
             {
                 Config ??= api.LoadModConfig<ModConfig>(ConfigName);
@@ -51,8 +57,6 @@ namespace ImmersiveInventorySpoilage
                 api.Logger.Warning("Failed to load config, using default values instead");
                 Config = new();
             }
-
-            RegisterCollectibleBehaviors(api);
         }
 
         private static void RegisterCollectibleBehaviors(ICoreAPI api)

@@ -8,5 +8,15 @@
         "name": "WetObject"
       }
     ]
+  },
+  {
+    "file": "game:itemtypes/resource/snowball.json",
+    "op": "addmerge",
+    "path": "/behaviors",
+    "value": [
+      {
+        "name": "WetObject"
+      }
+    ]
   }
 ]
