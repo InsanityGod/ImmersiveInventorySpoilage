@@ -1,0 +1,23 @@
+[
+  {
+    "file": "game:itemtypes/resource/slush.json",
+    "op": "addmerge",
+    "path": "/transitionableProps",
+    "value": [
+      {
+        "type": "Melt",
+        "freshHours": { "avg": 0 },
+        "transitionHours": { "avg": 0.5 },
+        "transitionedStack": {
+          "type": "item",
+          "code": "slush"
+        },
+        "transitionRatio": 0
+      }
+    ],
+    "condition": {
+      "when": "ImmersiveInventorySpoilage_Feature_StuffCanFullyMelt",
+      "isValue": true
+    }
+  }
+]

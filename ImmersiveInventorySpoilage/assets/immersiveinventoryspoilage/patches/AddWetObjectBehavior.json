@@ -1,0 +1,30 @@
+[
+  {
+    "file": "game:itemtypes/resource/slush.json",
+    "op": "addmerge",
+    "path": "/behaviors",
+    "value": [
+      {
+        "name": "WetObject"
+      }
+    ],
+    "condition": {
+      "when": "ImmersiveInventorySpoilage_Feature_ItemWetness",
+      "isValue": true
+    }
+  },
+  {
+    "file": "game:itemtypes/resource/snowball.json",
+    "op": "addmerge",
+    "path": "/behaviors",
+    "value": [
+      {
+        "name": "WetObject"
+      }
+    ],
+    "condition": {
+      "when": "ImmersiveInventorySpoilage_Feature_ItemWetness",
+      "isValue": true
+    }
+  }
+]

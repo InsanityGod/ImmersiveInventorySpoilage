@@ -54,5 +54,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   </Content>
 </ItemGroup>
+<ItemGroup>
+	<Content Include="assets\**\*.json">
+		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</Content>
+</ItemGroup>
 
 </Project>
