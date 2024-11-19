@@ -29,7 +29,7 @@ namespace ImmersiveInventorySpoilage.Behaviors.Items
         {
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
 
-            dsc.AppendLine("Carrying this item will make you wet!");
+            dsc.AppendLine("<font color=\"#0E87CC\">Carrying this item will make you wet!</font>");
         }
 
         public void ApplyWetnessEffect(ItemStack item, IPlayer player, float secondsPassed)
