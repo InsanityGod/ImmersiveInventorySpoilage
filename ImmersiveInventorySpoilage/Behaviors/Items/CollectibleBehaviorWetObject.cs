@@ -35,7 +35,12 @@ namespace ImmersiveInventorySpoilage.Behaviors.Items
         public void ApplyWetnessEffect(ItemStack item, IPlayer player, float secondsPassed)
         {
             var tempBehaviour = player.Entity.GetBehavior<EntityBehaviorBodyTemperature>();
-            tempBehaviour.Wetness += item.StackSize * WetObjectProps.ItemWetnessFactor * secondsPassed;
+
+            //This is to prevent the wetness from exceeding the normal maximum value of 1 while still allowing other mods to go past it if they want
+            var maxWetnessIncrease = 1 - tempBehaviour.Wetness;
+            if (maxWetnessIncrease <= 0) return;
+
+            tempBehaviour.Wetness += Math.Max(item.StackSize * WetObjectProps.ItemWetnessFactor * secondsPassed, maxWetnessIncrease);
         }
 
         public static void RegisterListener(ICoreAPI api)
