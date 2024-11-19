@@ -7,7 +7,11 @@
       {
         "name": "WetObject"
       }
-    ]
+    ],
+    "condition": {
+      "when": "ImmersiveInventorySpoilage_Feature_ItemWetness",
+      "isValue": true
+    }
   },
   {
     "file": "game:itemtypes/resource/snowball.json",
@@ -17,6 +21,10 @@
       {
         "name": "WetObject"
       }
-    ]
+    ],
+    "condition": {
+      "when": "ImmersiveInventorySpoilage_Feature_ItemWetness",
+      "isValue": true
+    }
   }
 ]

@@ -57,6 +57,9 @@ namespace ImmersiveInventorySpoilage
                 api.Logger.Warning("Failed to load config, using default values instead");
                 Config = new();
             }
+
+            api.World.Config.SetBool("ImmersiveInventorySpoilage_Feature_ItemWetness", Config.Feature_ItemWetness);
+            api.World.Config.SetBool("ImmersiveInventorySpoilage_Feature_StuffCanFullyMelt", Config.Feature_StuffCanFullyMelt);
         }
 
         private static void RegisterCollectibleBehaviors(ICoreAPI api)

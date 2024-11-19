@@ -24,6 +24,17 @@ namespace ImmersiveInventorySpoilage.Config
         public bool AllowNegativeDryMultiplier { get; set; } = true;
 
         /// <summary>
+        /// Wether item wetness is a thing
+        /// If set to true, certain items (such as snow) may make you wet if you carry them
+        /// </summary>
+        public bool Feature_ItemWetness { get; set; } = true;
+
+        /// <summary>
+        /// Wether stuff (for now only slush) can continue to melt all the way until it turns into water (and slips through the backpack, effictively removing it from the inventory)
+        /// </summary>
+        public bool Feature_StuffCanFullyMelt { get; set; } = true;
+
+        /// <summary>
         /// Up to how much the spoil rate multiplier increases when wet
         /// You can remove a food category (or set it to 0) to disable the effect on it
         /// </summary>
