@@ -17,7 +17,7 @@ namespace ImmersiveInventorySpoilage.HarmonyPatches
     {
         public static void PostFix(InventoryBasePlayer __instance)
         {
-            __instance.OnAcquireTransitionSpeed = (EnumTransitionType transType, ItemStack stack, float baseMul) =>
+            __instance.OnAcquireTransitionSpeed += (EnumTransitionType transType, ItemStack stack, float baseMul) =>
             {
                 if (__instance.Player == null || __instance.Api == null)
                 {
