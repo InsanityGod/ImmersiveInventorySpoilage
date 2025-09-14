@@ -5,11 +5,11 @@
     "path": "/behaviors",
     "value": [
       {
-        "name": "WetObject"
+        "name": "immersiveinventoryspoilage:WetObject"
       }
     ],
     "condition": {
-      "when": "ImmersiveInventorySpoilage_Feature_ItemWetness",
+      "when": "config://ImmersiveInventorySpoilageConfig/ItemWetness",
       "isValue": true
     }
   },
@@ -19,11 +19,11 @@
     "path": "/behaviors",
     "value": [
       {
-        "name": "WetObject"
+        "name": "immersiveinventoryspoilage:WetObject"
       }
     ],
     "condition": {
-      "when": "ImmersiveInventorySpoilage_Feature_ItemWetness",
+      "when": "config://ImmersiveInventorySpoilageConfig/ItemWetness",
       "isValue": true
     }
   }

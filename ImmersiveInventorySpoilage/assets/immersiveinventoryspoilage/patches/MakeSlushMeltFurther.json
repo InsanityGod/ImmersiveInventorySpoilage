@@ -10,14 +10,20 @@
         "transitionHours": { "avg": 0.5 },
         "transitionedStack": {
           "type": "item",
-          "code": "slush"
+          "code": "waterportion"
         },
         "transitionRatio": 0
       }
     ],
     "condition": {
-      "when": "ImmersiveInventorySpoilage_Feature_StuffCanFullyMelt",
+      "when": "config://ImmersiveInventorySpoilageConfig/StuffCanFullyMelt",
       "isValue": true
-    }
+    },
+    "DependsOn": [
+      {
+        "ModId": "brainfreeze",
+        "invert": true
+      }
+    ]
   }
 ]
