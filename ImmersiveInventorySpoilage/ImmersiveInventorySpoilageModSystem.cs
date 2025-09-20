@@ -28,7 +28,7 @@ namespace ImmersiveInventorySpoilage
         {
             foreach(var pair in ConnnectInWorldContainers.ImmersiveContainers)
             {
-                pair.Value?.ReloadRoom();
+                pair.Value?.TryUpdateRoom();
             }
         }
 

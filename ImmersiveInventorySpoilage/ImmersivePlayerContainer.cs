@@ -1,4 +1,5 @@
 ﻿using ImmersiveInventorySpoilage.Config;
+using System;
 using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
@@ -31,31 +32,52 @@ public class ImmersivePlayerContainer(InventoryBasePlayer playerInvetory) : InWo
 
     protected override float Inventory_OnAcquireTransitionSpeed(EnumTransitionType transType, ItemStack stack, float multiplier)
     {
-        multiplier = base.Inventory_OnAcquireTransitionSpeed(transType, stack, multiplier);
-
-        EntityBehaviorBodyTemperature tempBehaviour;
-        switch (transType)
+        try
         {
-            case EnumTransitionType.Dry:
-                tempBehaviour = PlayerInventory.Player.Entity.GetBehavior<EntityBehaviorBodyTemperature>();
+            multiplier = base.Inventory_OnAcquireTransitionSpeed(transType, stack, multiplier);
+
+            EntityBehaviorBodyTemperature tempBehaviour;
+            switch (transType)
+            {
+                case EnumTransitionType.Dry:
+                    tempBehaviour = PlayerInventory.Player.Entity.GetBehavior<EntityBehaviorBodyTemperature>();
 
 
-                multiplier = 0.5f - tempBehaviour.Wetness;
-                if (!ModConfig.Instance.AllowNegativeDryMultiplier && multiplier < 0) multiplier = 0;
+                    multiplier = 0.5f - tempBehaviour.Wetness;
+                    if (!ModConfig.Instance.AllowNegativeDryMultiplier && multiplier < 0) multiplier = 0;
 
-                break;
+                    break;
 
-            case EnumTransitionType.Perish:
-                tempBehaviour = PlayerInventory.Player.Entity.GetBehavior<EntityBehaviorBodyTemperature>();
-                
-                EnumFoodCategory foodCategory = stack.Collectible?.NutritionProps?.FoodCategory ?? EnumFoodCategory.Unknown;
-                ModConfig.Instance.WetnessSpoilIncreaseByFoodCat.TryGetValue(foodCategory, out var foodWetnessSpoilRate);
-                var wetnessMultiplier = 1 + (tempBehaviour.Wetness * foodWetnessSpoilRate);
-                
-                multiplier *= wetnessMultiplier;
-                break;
+                case EnumTransitionType.Perish:
+                    tempBehaviour = PlayerInventory.Player.Entity.GetBehavior<EntityBehaviorBodyTemperature>();
+                    
+                    EnumFoodCategory foodCategory = stack.Collectible?.NutritionProps?.FoodCategory ?? EnumFoodCategory.Unknown;
+                    ModConfig.Instance.WetnessSpoilIncreaseByFoodCat.TryGetValue(foodCategory, out var foodWetnessSpoilRate);
+                    var wetnessMultiplier = 1 + (tempBehaviour.Wetness * foodWetnessSpoilRate);
+                    
+                    multiplier *= wetnessMultiplier;
+                    break;
+            }
         }
-
+        catch(Exception ex)
+        {
+            PlayerInventory?.Api.Logger.Error("[immersiveinventoryspoilage] an error occured during {0}: {1}", nameof(Inventory_OnAcquireTransitionSpeed), ex);
+        }
         return multiplier;
+    }
+
+    public void TryUpdateRoom()
+    {
+        try
+        {
+            var pos = GetPosition();
+            if(pos is null) return;
+
+            room = roomReg.GetRoomForPosition(pos);
+        }
+        catch(Exception ex)
+        {
+            PlayerInventory?.Api.Logger.Error("[immersiveinventoryspoilage] an error occured during {0}: {1}", nameof(TryUpdateRoom), ex);
+        }
     }
 }

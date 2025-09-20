@@ -13,7 +13,7 @@ public static class ConnnectInWorldContainers
     [HarmonyTargetMethods]
     public static IEnumerable<MethodBase> TargetMethods() => typeof(InventoryBasePlayer).GetConstructors();
 
-    public static readonly ConditionalWeakTable<InventoryBasePlayer, InWorldContainer> ImmersiveContainers = new();
+    public static readonly ConditionalWeakTable<InventoryBasePlayer, ImmersivePlayerContainer> ImmersiveContainers = new();
 
     [HarmonyPostfix]
     public static void PostFix(InventoryBase __instance, ICoreAPI api)

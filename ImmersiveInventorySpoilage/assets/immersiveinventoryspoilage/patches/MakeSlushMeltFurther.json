@@ -24,6 +24,7 @@
         "ModId": "brainfreeze",
         "invert": true
       }
-    ]
+    ],
+    "side": "server"
   }
 ]
