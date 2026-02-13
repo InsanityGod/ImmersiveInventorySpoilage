@@ -1,42 +1,48 @@
-﻿using HarmonyLib;
-using ImmersiveInventorySpoilage.Behaviors.Items;
+﻿using ImmersiveInventorySpoilage.Behaviors.Items;
 using ImmersiveInventorySpoilage.HarmonyPatches;
-using InsanityLib.Attributes.Auto;
 using Vintagestory.API.Common;
 using Vintagestory.API.Server;
 
-[assembly: AutoRegistry("immersiveinventoryspoilage")]
-namespace ImmersiveInventorySpoilage
+namespace ImmersiveInventorySpoilage;
+
+public partial class ImmersiveInventorySpoilageModSystem : ModSystem
 {
-    public class ImmersiveInventorySpoilageModSystem : ModSystem
+
+    public override void StartPre(ICoreAPI api)
     {
+        base.StartPre(api);
+        AutoSetup(api);
+    }
 
-        private Harmony harmony;
+    public override void Start(ICoreAPI api)
+    {
+        base.Start(api);
+        GameTickListenerIds.Add(api.Event.RegisterGameTickListener(UpdateRooms, 1000));
+    }
 
-        public override void Start(ICoreAPI api)
+    public static void UpdateRooms(float deltaTime)
+    {
+        foreach(var pair in ConnnectInWorldContainers.ImmersiveContainers)
         {
-            api.Event.RegisterGameTickListener(UpdateRooms, 1000);
-
-            if (Harmony.HasAnyPatches(Mod.Info.ModID)) return;
-            
-            harmony = new Harmony(Mod.Info.ModID);
-
-            harmony.PatchAllUncategorized();
+            pair.Value?.TryUpdateRoom();
         }
+    }
 
-        public static void UpdateRooms(float deltaTime)
-        {
-            foreach(var pair in ConnnectInWorldContainers.ImmersiveContainers)
-            {
-                pair.Value?.TryUpdateRoom();
-            }
-        }
+    public override void StartServerSide(ICoreServerAPI api)
+    {
+        base.StartServerSide(api);
+        GameTickListenerIds.Add(WetObject.RegisterListener(api));
+    }
 
-        public override void StartServerSide(ICoreServerAPI api) => WetObject.RegisterListener(api);
+    public override void AssetsLoaded(ICoreAPI api)
+    {
+        base.AssetsLoaded(api);
+        AutoAssetsLoaded(api);
+    }
 
-        public override void Dispose()
-        {
-            harmony?.UnpatchAll(Mod.Info.ModID);
-        }
+    public override void Dispose()
+    {
+        base.Dispose();
+        AutoDispose();
     }
 }

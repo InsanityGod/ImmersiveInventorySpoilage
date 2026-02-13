@@ -61,7 +61,7 @@ public class ImmersivePlayerContainer(InventoryBasePlayer playerInvetory) : InWo
         }
         catch(Exception ex)
         {
-            PlayerInventory?.Api.Logger.Error("[immersiveinventoryspoilage] an error occured during {0}: {1}", nameof(Inventory_OnAcquireTransitionSpeed), ex);
+            PlayerInventory?.Api.Logger.Error("[immersiveinventoryspoilage] an error occurred during {0}: {1}", nameof(Inventory_OnAcquireTransitionSpeed), ex);
         }
         return multiplier;
     }
@@ -77,7 +77,7 @@ public class ImmersivePlayerContainer(InventoryBasePlayer playerInvetory) : InWo
         }
         catch(Exception ex)
         {
-            PlayerInventory?.Api.Logger.Error("[immersiveinventoryspoilage] an error occured during {0}: {1}", nameof(TryUpdateRoom), ex);
+            PlayerInventory?.Api.Logger.Error("[immersiveinventoryspoilage] an error occurred during {0}: {1}", nameof(TryUpdateRoom), ex);
         }
     }
 }

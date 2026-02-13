@@ -1,4 +1,4 @@
-﻿using InsanityLib.Attributes.Auto.Config;
+﻿using InsanityLib.Generators.Attributes;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Vintagestory.API.Common;
