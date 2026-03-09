@@ -51,7 +51,6 @@ public class ImmersiveInventorySpoilage(Entity entity) : EntityBehavior(entity)
             {
                 container.TryUpdateRoom();
             }
-            Console.WriteLine("test");
             deltaPassed = 0;
         }
     }
