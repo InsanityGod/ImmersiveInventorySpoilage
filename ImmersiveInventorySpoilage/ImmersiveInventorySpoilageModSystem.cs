@@ -1,5 +1,4 @@
 ﻿using ImmersiveInventorySpoilage.Behaviors.Items;
-using ImmersiveInventorySpoilage.HarmonyPatches;
 using Vintagestory.API.Common;
 using Vintagestory.API.Server;
 
@@ -12,20 +11,6 @@ public partial class ImmersiveInventorySpoilageModSystem : ModSystem
     {
         base.StartPre(api);
         AutoSetup(api);
-    }
-
-    public override void Start(ICoreAPI api)
-    {
-        base.Start(api);
-        GameTickListenerIds.Add(api.Event.RegisterGameTickListener(UpdateRooms, 1000));
-    }
-
-    public static void UpdateRooms(float deltaTime)
-    {
-        foreach(var pair in ConnnectInWorldContainers.ImmersiveContainers)
-        {
-            pair.Value?.TryUpdateRoom();
-        }
     }
 
     public override void StartServerSide(ICoreServerAPI api)

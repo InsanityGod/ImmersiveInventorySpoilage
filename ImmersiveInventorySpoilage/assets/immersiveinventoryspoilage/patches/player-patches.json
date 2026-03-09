@@ -1,0 +1,22 @@
+[
+  {
+    "file": "game:entities/humanoid/player.json",
+    "op": "addmerge",
+    "path": "/server/behaviors",
+    "value": [
+      {
+        "code": "immersiveinventoryspoilage:ImmersiveInventorySpoilage"
+      }
+    ]
+  },
+  {
+    "file": "game:entities/humanoid/player.json",
+    "op": "addmerge",
+    "path": "/client/behaviors",
+    "value": [
+      {
+        "code": "immersiveinventoryspoilage:ImmersiveInventorySpoilage"
+      }
+    ]
+  }
+]

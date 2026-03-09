@@ -15,7 +15,7 @@
     "side": "server"
   },
   {
-    "file": "game:itemtypes/resource/snowball.json",
+    "file": "game:itemtypes/snowball.json",
     "op": "addmerge",
     "path": "/behaviors",
     "value": [

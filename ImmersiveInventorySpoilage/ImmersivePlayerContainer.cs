@@ -1,4 +1,5 @@
 ﻿using ImmersiveInventorySpoilage.Config;
+using InsanityLib.Util;
 using System;
 using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
@@ -28,13 +29,19 @@ public class ImmersivePlayerContainer(InventoryBasePlayer playerInvetory) : InWo
 		PlayerInventory.OnInventoryOpened += OnInventoryOpened;
     }
 
+    public void Unlink()
+    {
+        PlayerInventory.OnAcquireTransitionSpeed -= Inventory_OnAcquireTransitionSpeed;
+		PlayerInventory.OnInventoryOpened -= OnInventoryOpened;
+    }
+
     private void OnInventoryOpened(IPlayer player) => OnTick(1f);
 
-    protected override float Inventory_OnAcquireTransitionSpeed(EnumTransitionType transType, ItemStack stack, float multiplier)
+    protected override float Inventory_OnAcquireTransitionSpeed(EnumTransitionType transType, ItemStack stack, float baseMul)
     {
         try
         {
-            multiplier = base.Inventory_OnAcquireTransitionSpeed(transType, stack, multiplier);
+            baseMul = base.Inventory_OnAcquireTransitionSpeed(transType, stack, baseMul);
 
             EntityBehaviorBodyTemperature tempBehaviour;
             switch (transType)
@@ -43,8 +50,8 @@ public class ImmersivePlayerContainer(InventoryBasePlayer playerInvetory) : InWo
                     tempBehaviour = PlayerInventory.Player.Entity.GetBehavior<EntityBehaviorBodyTemperature>();
 
 
-                    multiplier = 0.5f - tempBehaviour.Wetness;
-                    if (!ModConfig.Instance.AllowNegativeDryMultiplier && multiplier < 0) multiplier = 0;
+                    baseMul = 0.5f - tempBehaviour.Wetness;
+                    if (!ModConfig.Instance.AllowNegativeDryMultiplier && baseMul < 0) baseMul = 0;
 
                     break;
 
@@ -55,7 +62,7 @@ public class ImmersivePlayerContainer(InventoryBasePlayer playerInvetory) : InWo
                     ModConfig.Instance.WetnessSpoilIncreaseByFoodCat.TryGetValue(foodCategory, out var foodWetnessSpoilRate);
                     var wetnessMultiplier = 1 + (tempBehaviour.Wetness * foodWetnessSpoilRate);
                     
-                    multiplier *= wetnessMultiplier;
+                    baseMul *= wetnessMultiplier;
                     break;
             }
         }
@@ -63,7 +70,7 @@ public class ImmersivePlayerContainer(InventoryBasePlayer playerInvetory) : InWo
         {
             PlayerInventory?.Api.Logger.Error("[immersiveinventoryspoilage] an error occurred during {0}: {1}", nameof(Inventory_OnAcquireTransitionSpeed), ex);
         }
-        return multiplier;
+        return baseMul;
     }
 
     public void TryUpdateRoom()

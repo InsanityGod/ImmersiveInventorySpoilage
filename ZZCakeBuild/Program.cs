@@ -9,6 +9,7 @@ using Cake.Json;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using Vintagestory.API.Common;
 
@@ -62,7 +63,7 @@ namespace CakeBuild
                 }
                 catch (JsonException ex)
                 {
-                    throw new Exception($"Validation failed for JSON file: {file.FullPath}{Environment.NewLine}{ex.Message}", ex);
+                    throw new ValidationException($"Validation failed for JSON file: {file.FullPath}{Environment.NewLine}{ex.Message}", ex);
                 }
             }
         }
