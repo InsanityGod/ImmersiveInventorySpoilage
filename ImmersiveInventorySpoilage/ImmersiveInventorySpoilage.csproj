@@ -8,10 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-	  <Reference Include="InsanityLib">
-		  <HintPath>..\..\InsanityLib\InsanityLib\bin\Debug\Mods\mod\InsanityLib.dll</HintPath>
-		  <Private>False</Private>
-	  </Reference>
+    <Reference Include="InsanityLib">
+      <HintPath>..\..\Dep\insanitylib_1.1.0\InsanityLib.dll</HintPath>
+    </Reference>
     <Reference Include="VintagestoryAPI">
       <HintPath>$(VINTAGE_STORY)/VintagestoryAPI.dll</HintPath>
       <Private>false</Private>
