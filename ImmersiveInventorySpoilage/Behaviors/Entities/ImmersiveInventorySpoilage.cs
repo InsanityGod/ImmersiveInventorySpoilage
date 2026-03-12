@@ -6,7 +6,7 @@ namespace ImmersiveInventorySpoilage.Behaviors.Entities;
 
 public class ImmersiveInventorySpoilage(Entity entity) : EntityBehavior(entity)
 {
-    ImmersivePlayerContainer[]? containers;
+    ImmersiveContainer[]? containers;
 
     public override void AfterInitialized(bool onFirstSpawn)
     {
@@ -24,34 +24,20 @@ public class ImmersiveInventorySpoilage(Entity entity) : EntityBehavior(entity)
         if (player.InventoryManager.GetInventory($"craftinggrid-{player.PlayerUID}") is not InventoryBasePlayer craftinggridBackpack) return;
 
         containers = [
-            new ImmersivePlayerContainer(invBackpack),
-            new ImmersivePlayerContainer(mouseBackpack),
-            new ImmersivePlayerContainer(hotbarBackpack),
-            new ImmersivePlayerContainer(craftinggridBackpack),
+            new ImmersiveContainer(invBackpack, playerEntity),
+            new ImmersiveContainer(mouseBackpack, playerEntity),
+            new ImmersiveContainer(hotbarBackpack, playerEntity),
+            new ImmersiveContainer(craftinggridBackpack, playerEntity),
         ];
         foreach(var container in containers) container.EarlyInit(entity.Api);
     }
 
-    const float deltaWait = 2.5f;
-    float deltaPassed = 0;
     public override void OnGameTick(float deltaTime)
     {
         base.OnGameTick(deltaTime);
         if(containers is null)
         {
             TryInitialize();
-            return;
-        }
-
-        deltaPassed += deltaTime;
-        if (deltaPassed > deltaWait)
-        {
-            //TODO merge room check
-            foreach(var container in containers)
-            {
-                container.TryUpdateRoom();
-            }
-            deltaPassed = 0;
         }
     }
 
