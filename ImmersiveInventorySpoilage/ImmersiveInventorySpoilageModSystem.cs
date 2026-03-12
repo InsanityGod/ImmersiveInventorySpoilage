@@ -1,6 +1,5 @@
 ﻿using HarmonyLib;
 using ImmersiveInventorySpoilage.Behaviors.Items;
-using ImmersiveInventorySpoilage.HarmonyPatches;
 using InsanityLib.Attributes.Auto;
 using Vintagestory.API.Common;
 using Vintagestory.API.Server;
@@ -11,25 +10,16 @@ namespace ImmersiveInventorySpoilage
     public class ImmersiveInventorySpoilageModSystem : ModSystem
     {
 
-        private Harmony harmony;
+        private Harmony? harmony;
 
         public override void Start(ICoreAPI api)
         {
-            api.Event.RegisterGameTickListener(UpdateRooms, 1000);
-
+            api.RegisterEntityBehaviorClass("immersiveinventoryspoilage:ImmersiveInventorySpoilage", typeof(Behaviors.Entities.ImmersiveInventorySpoilage));
             if (Harmony.HasAnyPatches(Mod.Info.ModID)) return;
             
             harmony = new Harmony(Mod.Info.ModID);
 
             harmony.PatchAllUncategorized();
-        }
-
-        public static void UpdateRooms(float deltaTime)
-        {
-            foreach(var pair in ConnnectInWorldContainers.ImmersiveContainers)
-            {
-                pair.Value?.TryUpdateRoom();
-            }
         }
 
         public override void StartServerSide(ICoreServerAPI api) => WetObject.RegisterListener(api);

@@ -5,11 +5,13 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputPath>bin\$(Configuration)\Mods\mod</OutputPath>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+	<Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <Reference Include="InsanityLib">
       <HintPath>..\..\Dep\insanitylib_1.1.0\InsanityLib.dll</HintPath>
+		<Private>false</Private>
     </Reference>
     <Reference Include="VintagestoryAPI">
       <HintPath>$(VINTAGE_STORY)/VintagestoryAPI.dll</HintPath>

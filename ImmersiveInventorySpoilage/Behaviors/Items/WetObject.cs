@@ -36,6 +36,7 @@ public class WetObject(CollectibleObject collObj) : CollectibleBehavior(collObj)
         tempBehaviour.Wetness += Math.Max(item.StackSize * WetObjectProps.ItemWetnessFactor * secondsPassed, maxWetnessIncrease);
     }
 
+    //TODO maybe move this to a behavior on the Entity instead
     public static long RegisterListener(ICoreAPI api) => api.Event.RegisterGameTickListener(secondsPassed =>
     {
         foreach (var player in api.World.AllOnlinePlayers)
