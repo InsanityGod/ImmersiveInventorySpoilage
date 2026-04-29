@@ -4,6 +4,7 @@ using System.Text;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
+using Vintagestory.API.Server;
 using Vintagestory.GameContent;
 using Vintagestory.Server;
 
@@ -23,7 +24,7 @@ public class WetObject(CollectibleObject collObj) : CollectibleBehavior(collObj)
     {
         base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
         dsc.AppendLine(Lang.Get("immersiveinventoryspoilage:wetnesstooltip"));
-    }
+    } 
 
     public void ApplyWetnessEffect(ItemStack item, IPlayer player, float secondsPassed)
     {
@@ -41,8 +42,7 @@ public class WetObject(CollectibleObject collObj) : CollectibleBehavior(collObj)
     {
         foreach (var player in api.World.AllOnlinePlayers)
         {
-            var serverPlayer = player as ServerPlayer;
-            if (serverPlayer.ConnectionState != Vintagestory.API.Server.EnumClientState.Connected && serverPlayer.ConnectionState != Vintagestory.API.Server.EnumClientState.Playing) continue;
+            if(player is not ServerPlayer { Entity.World: not null } serverPlayer || serverPlayer.ConnectionState is not EnumClientState.Playing) return;
 
             player.Entity.WalkInventory(invSlot =>
             {
